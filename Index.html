@@ -1,0 +1,454 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دليل تأسيس الشركات في مصر</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Chosen Palette: Warm Neutrals & Trust Blue (Slate-50 bg, Slate-800 text, Sky-700 primary, Amber-500 accent) -->
+    <!-- Application Structure Plan: The SPA is structured sequentially to guide first-time founders. It starts with an overview of company types (to educate), uses a radar chart to visually compare them (making the decision clear), explicitly recommends the LLC (شركة ذات مسؤولية محدودة) based on their specific situation (4 partners), details the establishment process via an interactive timeline, and provides an interactive checklist for requirements. This logical flow moves the user from 'learning' to 'acting'. -->
+    <!-- Visualization & Content Choices: 1. Radar Chart (Chart.js): To compare company types across 4 metrics (liability, ease of setup, etc.), clearly showing why LLC is best for 4 people. 2. Interactive Timeline (HTML/JS): To break down the GAFI setup process into digestible, clickable steps. 3. Interactive Checklist (HTML/JS): To gamify and track the required documents, making an administrative task feel manageable. NO SVG/Mermaid used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 40vh;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            right: -25px;
+            top: 5px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #0369a1;
+            border: 3px solid #f0f9ff;
+            transition: all 0.3s ease;
+        }
+        .timeline-item.active::before {
+            background-color: #f59e0b;
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.2);
+        }
+        .timeline-content {
+            transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        .timeline-item.active .timeline-content {
+            max-height: 500px;
+            opacity: 1;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+        
+        input[type="checkbox"] {
+            accent-color: #0369a1;
+        }
+    </style>
+</head>
+<body class="antialiased scroll-smooth">
+
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <span class="text-2xl text-sky-700">🏛️</span>
+                    <span class="font-bold text-xl text-slate-800">مُـؤسِّـس</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8 space-x-reverse">
+                    <a href="#types" class="text-slate-600 hover:text-sky-700 transition">أنواع الشركات</a>
+                    <a href="#recommendation" class="text-slate-600 hover:text-sky-700 transition">التوصية</a>
+                    <a href="#process" class="text-slate-600 hover:text-sky-700 transition">خطوات التأسيس</a>
+                    <a href="#checklist" class="text-slate-600 hover:text-sky-700 transition">المتطلبات</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-sky-50 py-16 md:py-24 border-b border-sky-100">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight mb-6">
+                دليلك لتأسيس شركتك الأولى في مصر
+            </h1>
+            <p class="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">
+                أهلاً بك وشركائك في عالم ريادة الأعمال! هذا الدليل التفاعلي صُمم خصيصاً لمساعدتك أنت وشركائك الثلاثة لفهم الخيارات المتاحة، واختيار الكيان القانوني الأنسب، ومعرفة الخطوات العملية للتأسيس في الهيئة العامة للاستثمار والمناطق الحرة (GAFI).
+            </p>
+            <div class="flex justify-center gap-4">
+                <a href="#recommendation" class="bg-sky-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-sky-800 transition shadow-md">شاهد التوصية المباشرة</a>
+                <a href="#types" class="bg-white text-sky-700 border border-sky-200 px-6 py-3 rounded-lg font-semibold hover:bg-sky-50 transition shadow-sm">استكشف الأنواع أولاً</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24">
+
+        <section id="types" class="scroll-mt-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-800 mb-4">أنواع الشركات في مصر</h2>
+                <p class="text-slate-600 max-w-3xl mx-auto">
+                    ينقسم القانون المصري للشركات إلى عدة أنواع رئيسية. يهدف هذا القسم إلى توضيح الفروق الجوهرية بينها من حيث المسؤولية القانونية، عدد الشركاء، ورأس المال لمساعدتكم في فهم المشهد العام.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-4">
+                    <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition cursor-pointer" onclick="updateChart(0)">
+                        <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2"><span class="text-sky-600">👤</span> المنشأة الفردية</h3>
+                        <p class="text-slate-600 mt-2 text-sm">يمتلكها شخص واحد فقط. المسؤولية غير محدودة (تمتد لأمواله الخاصة). غير مناسبة لوضعكم (4 شركاء).</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition cursor-pointer" onclick="updateChart(1)">
+                        <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2"><span class="text-sky-600">🤝</span> شركة التضامن</h3>
+                        <p class="text-slate-600 mt-2 text-sm">شريكان أو أكثر. كل شريك مسؤول بالتضامن في جميع أمواله الخاصة عن ديون الشركة. نسبة المخاطرة عالية جداً.</p>
+                    </div>
+                    <div class="bg-sky-50 border-2 border-sky-300 rounded-xl p-6 shadow-md cursor-pointer" onclick="updateChart(2)">
+                        <h3 class="text-xl font-bold text-sky-800 flex items-center gap-2"><span class="text-sky-600">🛡️</span> شركة ذات مسؤولية محدودة (LLC)</h3>
+                        <p class="text-slate-700 mt-2 text-sm font-semibold">من 2 إلى 50 شريك. مسؤولية الشريك محدودة بحصته في رأس المال فقط. (الخيار الأمثل لكم).</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition cursor-pointer" onclick="updateChart(3)">
+                        <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2"><span class="text-sky-600">📈</span> شركة المساهمة (JSC)</h3>
+                        <p class="text-slate-600 mt-2 text-sm">تتطلب 3 شركاء على الأقل، رأس مال ضخم، وإجراءات حوكمة معقدة. مناسبة للمشاريع الضخمة التي تخطط للطرح في البورصة.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center">
+                    <h4 class="text-lg font-bold text-slate-700 mb-4 text-center">مقارنة المؤشرات الرئيسية للشركات</h4>
+                    <p class="text-xs text-slate-500 mb-4 text-center">اضغط على البطاقات الجانبية لرؤية تقييم كل نوع (مقياس من 1 إلى 10)</p>
+                    <div class="chart-container w-full">
+                        <canvas id="companyTypesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="recommendation" class="scroll-mt-24">
+            <div class="bg-gradient-to-br from-sky-800 to-slate-900 rounded-3xl p-8 md:p-12 text-white shadow-xl relative overflow-hidden">
+                <div class="absolute top-0 left-0 text-9xl opacity-10">💼</div>
+                <div class="relative z-10">
+                    <div class="flex flex-col md:flex-row items-center gap-8">
+                        <div class="flex-1">
+                            <span class="bg-amber-500 text-slate-900 text-sm font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block">التوصية النهائية</span>
+                            <h2 class="text-3xl md:text-4xl font-bold mb-4 leading-tight">الشركة ذات المسؤولية المحدودة (LLC) هي الخيار الأمثل لكم</h2>
+                            <p class="text-sky-100 mb-6 text-lg">
+                                بما أنكم 4 شركاء وتبدؤون نشاطكم لأول مرة، فإن تأسيس شركة ذات مسؤولية محدودة يوفر لكم التوازن المثالي بين الحماية القانونية والمرونة الإدارية.
+                            </p>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+                                <div class="bg-white/10 p-4 rounded-xl backdrop-blur-sm">
+                                    <div class="text-amber-400 text-2xl mb-2">🛡️</div>
+                                    <h4 class="font-bold mb-1">حماية الأموال الخاصة</h4>
+                                    <p class="text-sm text-sky-200">لا يمكن للدائنين الرجوع على أموالكم الشخصية، المخاطرة تقتصر على رأس مال الشركة فقط.</p>
+                                </div>
+                                <div class="bg-white/10 p-4 rounded-xl backdrop-blur-sm">
+                                    <div class="text-amber-400 text-2xl mb-2">⚖️</div>
+                                    <h4 class="font-bold mb-1">مرونة في الحصص</h4>
+                                    <p class="text-sm text-sky-200">يمكن تقسيم الحصص بناءً على مساهمة كل منكم (أموال أو مجهود)، وإدارتها تتم عبر مدير أو مجلس مديرين.</p>
+                                </div>
+                                <div class="bg-white/10 p-4 rounded-xl backdrop-blur-sm">
+                                    <div class="text-amber-400 text-2xl mb-2">💸</div>
+                                    <h4 class="font-bold mb-1">لا يوجد حد أدنى تعجيزي</h4>
+                                    <p class="text-sm text-sky-200">القانون الحالي لا يشترط حداً أدنى ضخماً لرأس المال لتأسيس هذا النوع من الشركات.</p>
+                                </div>
+                                <div class="bg-white/10 p-4 rounded-xl backdrop-blur-sm">
+                                    <div class="text-amber-400 text-2xl mb-2">🏛️</div>
+                                    <h4 class="font-bold mb-1">صورة مؤسسية</h4>
+                                    <p class="text-sm text-sky-200">تعطي ثقة أكبر للموردين والعملاء مقارنة بشركات الأشخاص (التضامن).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="process" class="scroll-mt-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-800 mb-4">كيف تؤسس الشركة؟ (خطوات العمل)</h2>
+                <p class="text-slate-600 max-w-3xl mx-auto">
+                    في مصر، أصبحت عملية التأسيس أسهل وتتم معظمها من خلال <strong>مركز خدمات المستثمرين</strong> التابع للهيئة العامة للاستثمار (GAFI) بنظام الشباك الواحد. اضغط على كل خطوة لمعرفة التفاصيل.
+                </p>
+            </div>
+
+            <div class="max-w-3xl mx-auto relative">
+                <div class="absolute right-[7px] top-0 bottom-0 w-0.5 bg-slate-200"></div>
+                <div id="timeline-container" class="space-y-6">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <section id="checklist" class="scroll-mt-24 bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800 mb-2">قائمة التجهيزات (أنت وشركاؤك)</h2>
+                    <p class="text-slate-600 text-sm">حدد العناصر التي قمتم بتجهيزها لتبدأوا إجراءات التأسيس فوراً.</p>
+                </div>
+                <div class="bg-sky-50 px-4 py-2 rounded-lg text-sky-800 font-bold border border-sky-100 flex items-center gap-3">
+                    <span>نسبة الإنجاز:</span>
+                    <span id="progress-text">0%</span>
+                </div>
+            </div>
+
+            <div class="w-full bg-slate-100 rounded-full h-2.5 mb-8 overflow-hidden">
+                <div id="progress-bar" class="bg-sky-600 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+
+            <div id="checklist-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-12 text-center text-sm">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-2xl mb-4">🏛️</div>
+            <p class="mb-4">هذا الدليل أُعد لأغراض استرشادية لتبسيط المعلومات المعقدة للمبتدئين.<br>يُنصح دائماً بالاستعانة بمحامٍ تجاري أو محاسب قانوني عند البدء الفعلي.</p>
+            <div class="flex justify-center gap-4 text-sky-400">
+                <a href="https://www.gafi.gov.eg/" target="_blank" class="hover:text-sky-300">موقع الهيئة العامة للاستثمار (GAFI)</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const chartData = [
+            {
+                label: 'المنشأة الفردية',
+                data: [9, 1, 1, 8],
+                color: 'rgba(148, 163, 184, 0.5)',
+                borderColor: 'rgb(148, 163, 184)'
+            },
+            {
+                label: 'شركة التضامن',
+                data: [7, 2, 4, 7],
+                color: 'rgba(148, 163, 184, 0.5)',
+                borderColor: 'rgb(148, 163, 184)'
+            },
+            {
+                label: 'ذات مسؤولية محدودة (لـ 4 شركاء)',
+                data: [8, 9, 10, 8],
+                color: 'rgba(14, 165, 233, 0.5)',
+                borderColor: 'rgb(2, 132, 199)'
+            },
+            {
+                label: 'شركة المساهمة',
+                data: [3, 9, 7, 4],
+                color: 'rgba(148, 163, 184, 0.5)',
+                borderColor: 'rgb(148, 163, 184)'
+            }
+        ];
+
+        let companyChart;
+
+        function initChart() {
+            const ctx = document.getElementById('companyTypesChart').getContext('2d');
+            
+            Chart.defaults.font.family = "'Cairo', sans-serif";
+            Chart.defaults.color = '#64748b';
+
+            companyChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['سهولة وسرعة التأسيس', 'حماية الأموال الشخصية', 'مدى الملاءمة لـ 4 شركاء', 'مرونة الإدارة واتخاذ القرار'],
+                    datasets: [chartData[2]] 
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            min: 0,
+                            max: 10,
+                            ticks: { display: false },
+                            grid: { color: '#e2e8f0' },
+                            pointLabels: {
+                                font: { size: 12, weight: 'bold' }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { weight: 'bold' }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.formattedValue + '/10';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateChart(index) {
+            companyChart.data.datasets = [chartData[index]];
+            companyChart.update();
+            
+            const cards = document.querySelectorAll('#types > div > div > div');
+            cards.forEach((card, i) => {
+                if(i === index) {
+                    card.className = "bg-sky-50 border-2 border-sky-300 rounded-xl p-6 shadow-md cursor-pointer";
+                    card.querySelector('h3').className = "text-xl font-bold text-sky-800 flex items-center gap-2";
+                } else {
+                    card.className = "bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition cursor-pointer";
+                    card.querySelector('h3').className = "text-xl font-bold text-slate-800 flex items-center gap-2";
+                }
+            });
+        }
+
+        const timelineSteps = [
+            {
+                title: "1. الاتفاق بين الشركاء الأربعة",
+                content: "قبل أي شيء، يجب أن تجلسوا لتحديد: اسم الشركة (مقترح أو أكثر)، نسبة كل شريك في رأس المال، من سيكون 'المدير' (هل هو واحد منكم أم أكثر؟ وما هي صلاحياته؟)، وما هو نشاط الشركة الأساسي."
+            },
+            {
+                title: "2. استخراج شهادة عدم الالتباس",
+                content: "التوجه لهيئة الاستثمار (أو عبر البوابة الإلكترونية) لتقديم مقترح باسم الشركة للتأكد من عدم وجود شركة أخرى بنفس الاسم. يتم استلام الشهادة غالباً في نفس اليوم أو اليوم التالي."
+            },
+            {
+                title: "3. فتح الحساب البنكي وإيداع رأس المال",
+                content: "بالنسبة للشركة ذات المسؤولية المحدودة، لم يعد إيداع رأس المال كاملاً عند التأسيس شرطاً معقداً في بعض الأنشطة، ولكن في المعتاد يتم فتح حساب 'تحت التأسيس' وإيداع رأس المال، والحصول على شهادة بنكية بذلك. (تأكدوا من محاسبكم القانوني حسب نشاطكم)."
+            },
+            {
+                title: "4. تحرير العقد الابتدائي ونظام الشركة",
+                content: "بناءً على النماذج المعدة من هيئة الاستثمار، يتم صياغة عقد تأسيس الشركة موضحاً فيه حصص الشركاء الأربعة، أسماؤهم، وبيانات المدير. يتم التوقيع على هذا العقد من جميع الشركاء أو من ينوب عنهم بتوكيل رسمي."
+            },
+            {
+                title: "5. التسجيل في هيئة الاستثمار (نظام الشباك الواحد)",
+                content: "يتم تقديم جميع المستندات (الشهادة البنكية، عدم الالتباس، التوكيلات، صور البطاقات، والعقد) إلى محامي الهيئة لمراجعتها واعتمادها، ثم سداد الرسوم المطلوبة."
+            },
+            {
+                title: "6. الاستلام (السجل التجاري والبطاقة الضريبية)",
+                content: "بعد إنهاء الإجراءات، تستلمون عقد الشركة المعتمد، السجل التجاري للشركة، والبطاقة الضريبية. مبروك! أصبحت الشركة كياناً قانونياً قائماً يمكنك الآن استكمال تفعيل الحساب البنكي التجاري."
+            }
+        ];
+
+        function renderTimeline() {
+            const container = document.getElementById('timeline-container');
+            timelineSteps.forEach((step, index) => {
+                const isActive = index === 0 ? 'active' : '';
+                const html = `
+                    <div class="timeline-item relative pr-8 cursor-pointer ${isActive}" onclick="toggleTimeline(this)">
+                        <div class="bg-white border ${index === 0 ? 'border-amber-400 shadow-md' : 'border-slate-200 shadow-sm'} rounded-xl p-5 hover:border-sky-300 transition">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-lg font-bold ${index === 0 ? 'text-sky-800' : 'text-slate-800'}">${step.title}</h3>
+                                <span class="text-slate-400 text-sm">&#x25BC;</span>
+                            </div>
+                            <div class="timeline-content text-slate-600 leading-relaxed text-sm">
+                                ${step.content}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+
+        function toggleTimeline(element) {
+            const allItems = document.querySelectorAll('.timeline-item');
+            const isActive = element.classList.contains('active');
+            
+            allItems.forEach(item => {
+                item.classList.remove('active');
+                item.querySelector('div').classList.remove('border-amber-400', 'shadow-md');
+                item.querySelector('div').classList.add('border-slate-200', 'shadow-sm');
+                item.querySelector('h3').classList.remove('text-sky-800');
+                item.querySelector('h3').classList.add('text-slate-800');
+            });
+
+            if (!isActive) {
+                element.classList.add('active');
+                element.querySelector('div').classList.remove('border-slate-200', 'shadow-sm');
+                element.querySelector('div').classList.add('border-amber-400', 'shadow-md');
+                element.querySelector('h3').classList.remove('text-slate-800');
+                element.querySelector('h3').classList.add('text-sky-800');
+            }
+        }
+
+        const checklistItems = [
+            { id: 1, text: "صورة بطاقة الرقم القومي سارية للشركاء الأربعة." },
+            { id: 2, text: "تحديد اسم الشركة واختيار 3 أسماء بديلة." },
+            { id: 3, text: "الاتفاق على نسبة كل شريك في رأس المال." },
+            { id: 4, text: "تحديد مدير الشركة (من الشركاء أو من الخارج) وصلاحياته." },
+            { id: 5, text: "تحديد مقر الشركة (عقد إيجار أو سند ملكية إن وجد، أو يمكن التأسيس على مقر وهمي مؤقتاً في بعض المناطق الاستثمارية)." },
+            { id: 6, text: "عمل توكيلات رسمية (تأسيس شركات) للمحامي أو لمن سيقوم بالإجراءات بالنيابة عنكم." }
+        ];
+
+        let checklistState = new Array(checklistItems.length).fill(false);
+
+        function renderChecklist() {
+            const container = document.getElementById('checklist-container');
+            container.innerHTML = '';
+            
+            checklistItems.forEach((item, index) => {
+                const checked = checklistState[index] ? 'checked' : '';
+                const lineThrough = checklistState[index] ? 'line-through text-slate-400' : 'text-slate-700';
+                
+                const html = `
+                    <div class="flex items-start gap-3 p-3 bg-white border border-slate-100 rounded-lg hover:bg-slate-50 transition cursor-pointer" onclick="toggleCheckbox(${index})">
+                        <div class="mt-1">
+                            <input type="checkbox" id="check-${index}" class="w-5 h-5 cursor-pointer" ${checked} onclick="event.stopPropagation(); toggleCheckbox(${index})">
+                        </div>
+                        <label for="check-${index}" class="text-sm cursor-pointer select-none ${lineThrough}">
+                            ${item.text}
+                        </label>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+            updateProgress();
+        }
+
+        function toggleCheckbox(index) {
+            checklistState[index] = !checklistState[index];
+            renderChecklist();
+        }
+
+        function updateProgress() {
+            const completed = checklistState.filter(Boolean).length;
+            const total = checklistItems.length;
+            const percentage = Math.round((completed / total) * 100);
+            
+            document.getElementById('progress-bar').style.width = percentage + '%';
+            document.getElementById('progress-text').innerText = percentage + '%';
+        }
+
+        window.onload = () => {
+            initChart();
+            renderTimeline();
+            renderChecklist();
+        };
+    </script>
+</body>
+</html>
+
